@@ -109,6 +109,7 @@ body.sidehidden #sidebar { display:none; } body.sidehidden #objective, body.side
 </script>
 <script>
 // ===================== DATA =====================
+const VERSION = '0.4';
 const CELL = 24;          // world px per cell
 const MAPW = 64, MAPH = 64;
 const TPS = 30;           // logic ticks per second
@@ -3476,7 +3477,7 @@ class App {
       if (hasSave || hasAuto) btn('Load game', () => this.showMenu('load'));
       btn('How to play', () => this.showMenu('help'));
       btn('Settings', () => this.showMenu('settings'));
-      card.appendChild(el('div', 'foot', 'Works offline once loaded. Add to Home Screen for full-screen play.'));
+      card.appendChild(el('div', 'foot', 'Version ' + VERSION + ' · Works offline once loaded. Add to Home Screen for full-screen play.'));
     } else if (name === 'campaign') {
       card.appendChild(el('div', 'h', 'Campaign'));
       for (const f of ['union', 'ash']) {
@@ -3917,4 +3918,4 @@ class App {
 window.addEventListener('load', () => { window.app = new App(); });
 
 </script>
-<script>if(location.protocol.startsWith("http")&&"serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script></body></html>
+<script>if(location.protocol.startsWith("http")&&"serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").then(function(reg){reg.addEventListener("updatefound",function(){var nw=reg.installing;nw&&nw.addEventListener("statechange",function(){if(nw.state==="activated"&&navigator.serviceWorker.controller&&!window.app?.game){location.reload();}});});}).catch(function(){});}</script></body></html>
