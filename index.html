@@ -1,11 +1,13 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#0b0c0e"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon.png">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#0b0c0e">
 <title>Ironfield</title>
 <style>
 :root { --bg:#0b0c0e; --panel:#15181d; --panel2:#1d2129; --line:#2c323c; --text:#e8e6df; --muted:#9aa0a8; --accent:#e0b93c; --ok:#4cd964; --warn:#ff9f0a; --bad:#ff453a; --sidew:78px; }
 html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif; overscroll-behavior:none; height:100%; width:100%; overflow:hidden; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; -webkit-text-size-adjust:100%; }
 #app { position:fixed; inset:0; background:var(--bg); }
-#world { position:absolute; inset:0; width:100%; height:100%; touch-action:none; display:block; }
+:root { --topbar: calc(40px + env(safe-area-inset-top)); --botbar: calc(112px + env(safe-area-inset-bottom)); }
+#world { position:absolute; left:0; top:var(--topbar); width:calc(100% - var(--sidew)); height:calc(100% - var(--topbar) - var(--botbar)); touch-action:none; display:block; background:#07080a; }
+body.sidehidden #world { width:100%; } body.left #world { left:var(--sidew); }
 button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 [hidden] { display:none !important; }
 /* HUD */
@@ -24,7 +26,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 #swbtn { background:#3a1a1a; border:1px solid #8a2a2a; color:#ffb0b0; border-radius:6px; padding:4px 8px; font-size:11px; font-weight:700; }
 #swbtn.ready { background:var(--bad); color:#fff; border-color:#ff8080; animation: pulse 1s infinite alternate; }
 @keyframes pulse { from { filter:brightness(1);} to { filter:brightness(1.4);} }
-#objective { pointer-events:none !important; position:absolute; top:calc(42px + env(safe-area-inset-top)); left:8px; right:calc(var(--sidew) + 8px); font-size:11px; color:#cfd3d8; background:#0007; padding:3px 7px; border-radius:6px; pointer-events:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#objective { pointer-events:none !important; position:absolute; top:calc(44px + env(safe-area-inset-top)); left:8px; right:calc(var(--sidew) + 8px); font-size:11px; color:#cfd3d8; background:#0007; padding:3px 7px; border-radius:6px; pointer-events:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 #toasts { pointer-events:none !important; position:absolute; top:calc(66px + env(safe-area-inset-top)); left:8px; right:calc(var(--sidew) + 8px); display:flex; flex-direction:column; gap:4px; pointer-events:none; }
 .toast { background:#000c; border-left:3px solid var(--muted); padding:5px 8px; border-radius:4px; font-size:12px; opacity:1; transition:opacity .4s; max-width:100%; }
 .toast.ok { border-color:var(--ok);} .toast.warn { border-color:var(--bad);} .toast.mission { border-color:var(--accent); font-size:13px; }
@@ -80,9 +82,9 @@ body.sidehidden #sidebar { display:none; } body.sidehidden #objective, body.side
 .chip.on { background:var(--accent); color:#000; border-color:var(--accent); font-weight:700; }
 .stats { font-size:12px; color:var(--muted); }
 .foot { text-align:center; color:#666; font-size:11px; margin-top:14px; }
-@media (min-width: 700px) { :root { --sidew: 112px; } .tab { font-size:13px; padding:9px 0; } .item { height:92px; } .item .ico { width:54px; height:54px; } .item .nm { font-size:12px; max-width:104px; } .item .cost { font-size:11px; } #topbar { font-size:15px; } #objective { font-size:13px; } .toast { font-size:14px; } .abtn { padding:11px 16px; font-size:15px; } #selinfo { font-size:13px; } #selinfo b { font-size:14px; } .gbtn { font-size:14px; padding:7px 0; } #bottom { height:calc(124px + env(safe-area-inset-bottom)); } #sidebar { bottom:calc(124px + env(safe-area-inset-bottom)); } }
+@media (min-width: 700px) { :root { --sidew: 112px; --botbar: calc(124px + env(safe-area-inset-bottom)); } .tab { font-size:13px; padding:9px 0; } .item { height:92px; } .item .ico { width:54px; height:54px; } .item .nm { font-size:12px; max-width:104px; } .item .cost { font-size:11px; } #topbar { font-size:15px; } #objective { font-size:13px; } .toast { font-size:14px; } .abtn { padding:11px 16px; font-size:15px; } #selinfo { font-size:13px; } #selinfo b { font-size:14px; } .gbtn { font-size:14px; padding:7px 0; } #bottom { height:calc(124px + env(safe-area-inset-bottom)); } #sidebar { bottom:calc(124px + env(safe-area-inset-bottom)); } }
 </style>
-</head><body><div id="app">
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"></head><body><div id="app">
   <canvas id="world"></canvas>
   <div id="hud" hidden>
     <div id="topbar">
@@ -115,7 +117,7 @@ body.sidehidden #sidebar { display:none; } body.sidehidden #objective, body.side
 </script>
 <script>
 // ===================== DATA =====================
-const VERSION = '0.8';
+const VERSION = '1.0';
 const CELL = 24;          // world px per cell
 const MAPW = 64, MAPH = 64;
 const TPS = 30;           // logic ticks per second
@@ -426,6 +428,29 @@ function reachableSet(map, sx, sy) {
     }
   }
   return seen;
+}
+
+// Make every walkable region reachable from (sx, sy): carve a path to each sizeable pocket, fill tiny ones with rock
+function ensureConnectivity(map, rng, sx, sy) {
+  const w = map.w, h = map.h;
+  for (let pass = 0; pass < 6; pass++) {
+    const main = reachableSet(map, sx, sy);
+    const seen = new Uint8Array(w * h); let changed = false;
+    for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+      const i = map.idx(x, y);
+      if (seen[i] || main[i] || TERRAIN_SPEED[map.terrain[i]] === 0) continue;
+      // flood this pocket
+      const cells = []; const stack = [i]; seen[i] = 1;
+      while (stack.length) { const c = stack.pop(); cells.push(c); const cx = c % w, cy = (c / w) | 0; for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = cx + dx, ny = cy + dy; if (!map.inBounds(nx, ny)) continue; const ni = map.idx(nx, ny); if (seen[ni] || TERRAIN_SPEED[map.terrain[ni]] === 0) continue; seen[ni] = 1; stack.push(ni); } }
+      if (cells.length < 6) { for (const c of cells) { map.terrain[c] = rng() < 0.5 ? T_TREE : T_ROCK; map.ore[c] = 0; } changed = true; continue; }
+      // carve from the pocket cell nearest to any main cell
+      let best = null, bd = 1e9;
+      for (const c of cells) { const cx = c % w, cy = (c / w) | 0; for (let r = 1; r < 12 && r * r < bd; r++) { for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) { if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue; const nx = cx + dx, ny = cy + dy; if (!map.inBounds(nx, ny)) continue; if (main[map.idx(nx, ny)]) { const d = dx * dx + dy * dy; if (d < bd) { bd = d; best = [cx, cy, nx, ny]; } } } } }
+      if (best) { carvePath(map, rng, best[0], best[1], best[2], best[3], 1); changed = true; }
+      else { for (const c of cells) { map.terrain[c] = T_ROCK; map.ore[c] = 0; } changed = true; }
+    }
+    if (!changed) break;
+  }
 }
 
 // ===================== PATHFINDING (A*) =====================
@@ -1109,8 +1134,8 @@ class Game {
     for (const pl of this.players) {
       if (pl.defeated) continue;
       const hasB = this.buildings.some(b => b.owner === pl.id && !STRUCTURES[b.type].wall);
-      const hasU = this.units.some(u => u.owner === pl.id);
-      if (!hasB && !hasU) { pl.defeated = true; pl.alive = false; this.onPlayerDefeated && this.onPlayerDefeated(pl); }
+      const hasU = this.units.some(u => u.owner === pl.id && !UNITS[u.type].civ && (pl.human || hasB || UNITS[u.type].weapon || u.type === 'mcv' || UNITS[u.type].engineer));
+      if (!hasB && !hasU) { pl.defeated = true; pl.alive = false; for (const u of [...this.units]) if (u.owner === pl.id && !UNITS[u.type].civ) { this.addEffect('boom', u.x, u.y, 0.6, { r: 12 }); this.removeUnit(u); } this.onPlayerDefeated && this.onPlayerDefeated(pl); }
     }
   }
 
@@ -1510,11 +1535,20 @@ class Game {
     this.tickSuperweapons(dt);
     if (this.tick % TPS === 0) this.map.growOre(this.rng, 10);
     if (this.tick % 6 === 0) this.tickShroud();
+    if (this.tick % 60 === 0) this.revealLastEnemies();
     if (this.tick % TPS === 0) this.aiHarassTick && this.aiHarassTick();
     for (let i = this.effects.length - 1; i >= 0; i--) { const e = this.effects[i]; e.t += dt; if (e.t >= e.dur) { if (e.kind === 'track') this.trackCount--; this.effects.splice(i, 1); } }
     if (this.tick % 15 === 0) for (const pl of this.players) if (pl.ai && !pl.defeated) aiTick(this, pl, 0.5);
     if (this.mission) tickMission(this, dt);
     else if (!this.over) this.checkSkirmishEnd();
+  }
+  enemyCount() { let n = 0; for (const b of this.buildings) if (this.isEnemy(this.humanId, b.owner) && !STRUCTURES[b.type].wall) n++; for (const u of this.units) if (this.isEnemy(this.humanId, u.owner) && !UNITS[u.type].civ) n++; return n; }
+  // when only a handful of enemies remain, reveal them so the end of a game cannot hide in a corner
+  revealLastEnemies() {
+    const n = this.enemyCount(); this.lastEnemies = n;
+    if (n === 0 || n > 4) return;
+    for (const b of this.buildings) if (this.isEnemy(this.humanId, b.owner) && !STRUCTURES[b.type].wall) this.revealArea(b.cx + b.w / 2, b.cy + b.h / 2, 3);
+    for (const u of this.units) if (this.isEnemy(this.humanId, u.owner) && !UNITS[u.type].civ) { this.revealArea(u.cx, u.cy, 2.5); u.cloaked = false; u.uncloakT = 2; }
   }
   checkSkirmishEnd() {
     const me = this.players[this.humanId];
@@ -1889,6 +1923,7 @@ function buildSkirmishMap(g, seed, nPlayers) {
   // connectivity
   for (let i = 0; i < spots.length; i++) { carvePath(map, rng, spots[i][0], spots[i][1], 32, 32, 1); }
   for (let i = 0; i + 1 < spots.length; i++) carvePath(map, rng, spots[i][0], spots[i][1], spots[i + 1][0], spots[i + 1][1], 1);
+  ensureConnectivity(map, rng, spots[0][0], spots[0][1]);
   return spots;
 }
 
@@ -1926,7 +1961,8 @@ function spawnGroup(g, owner, list, x, y, opts = {}) {
   return out;
 }
 function placeBase(g, owner, list) { for (const [type, x, y, tag] of list) g.placeBuilding(type, owner, x, y, { instant: true, tag, free: false }); }
-function countEnemy(g, owner) { let n = 0; for (const b of g.buildings) if (g.isEnemy(owner, b.owner) && !STRUCTURES[b.type].wall) n++; for (const u of g.units) if (g.isEnemy(owner, u.owner) && !UNITS[u.type].civ) n++; return n; }
+function countEnemy(g, owner) { return g.enemyCount(); }
+function gone(g, tag) { const b = tagged(g, tag); return !b || b.owner === 0; }
 function tagged(g, tag) { for (const b of g.buildings) if (b.tag === tag) return b; for (const u of g.units) if (u.tag === tag) return u; return null; }
 function unitIn(g, owner, x0, y0, x1, y1) { return g.units.find(u => u.owner === owner && u.cx >= x0 && u.cx <= x1 && u.cy >= y0 && u.cy <= y1); }
 function objDone(m, id, done = true) { const o = m.objectives.find(o => o.id === id); if (o) o.done = done; }
@@ -1948,6 +1984,8 @@ function setupMission(g, id, restoring) {
       else if (op[0] === 'water') { for (let y = op[2]; y < op[2] + op[4]; y++) for (let x = op[1]; x < op[1] + op[3]; x++) if (map.inBounds(x, y)) map.terrain[map.idx(x, y)] = T_WATER; }
     }
     def.setup(g, g.mission);
+    ensureConnectivity(map, rng, g.startX, g.startY);
+    for (const u of g.units) if (u.kind !== 'air') g.setUnitOcc(u);
     g.revealArea(g.startX, g.startY, def.revealR || 9);
   }
 }
@@ -1994,14 +2032,14 @@ defMission({
     spawnGroup(g, 1, [['buggy', 1]], 26, 26);
   },
   triggers: [
-    { id: 'gun', when: (g, m) => m.vars.destroyed_gun, do: (g, m) => { objDone(m, 'gun'); missionMessage(g, 'Perimeter gun down. Second wave landing on the beach.'); spawnGroup(g, 0, [['rifleman', 3], ['rocketeer', 2], ['scout', 1]], 12, 40, { to: [18, 30] }); } },
+    { id: 'gun', when: (g, m) => gone(g, 'gun'), do: (g, m) => { objDone(m, 'gun'); missionMessage(g, 'Perimeter gun down. Second wave landing on the beach.'); spawnGroup(g, 0, [['rifleman', 3], ['rocketeer', 2], ['scout', 1]], 12, 40, { to: [18, 30] }); } },
     { id: 'alert', when: (g, m) => m.t > 60, do: (g, m) => { for (const u of g.units) if (u.owner === 1 && u.type === 'buggy') u.order = { type: 'hunt' }; } },
   ],
   hints: [
     { when: () => true, text: 'Select your squad: tap <b>Select army</b>, or press and hold on the ground and drag a box around them.', done: (g, ui) => ui.selected.size >= 3 },
     { when: () => true, text: 'Tap the ground ahead to advance. Armed units engage anything they meet on the way and hold where you sent them.', done: (g) => g.units.some(u => u.owner === 0 && u.order && (u.order.type === 'area' || u.order.type === 'attack')) },
     { when: (g) => g.units.some(u => u.owner === 1 && g.isRevealed(u.cx, u.cy) && u.kind === 'infantry'), text: 'Enemy infantry in sight. Tap one to focus fire. If a flame trooper appears, shoot it first: it is the only thing that kills your men quickly.', done: (g) => g.units.some(u => u.owner === 0 && u.order && u.order.type === 'attack' && u.order.force === false), timeout: 20000 },
-    { when: (g) => g.buildings.some(b => b.tag === 'gun' && g.isRevealed(b.cx, b.cy)), text: 'The gun turret fires an armour-piercing cannon: it barely scratches infantry but will kill your scout car. Rush it with the foot soldiers and keep the car back. Grenadiers are your building-killers.', done: (g, m) => !g.buildings.some(b => b.tag === 'gun'), timeout: 60000 },
+    { when: (g) => g.buildings.some(b => b.tag === 'gun' && g.isRevealed(b.cx, b.cy)), text: 'The gun turret fires an armour-piercing cannon: it barely scratches infantry but will kill your scout car. Rush it with the foot soldiers and keep the car back. Grenadiers are your building-killers.', done: (g, m) => gone(g, 'gun'), timeout: 60000 },
     { when: (g) => !g.buildings.some(b => b.tag === 'gun'), text: 'Reinforcements are on the beach. Bring them up and finish the outpost; the mission ends when nothing of theirs is left standing.', done: () => false, timeout: 12000 },
   ],
   win: (g, m) => countEnemy(g, 0) === 0, winText: 'Kessen Point is ours. The relay is back in Union hands.',
@@ -2023,7 +2061,7 @@ defMission({
   },
   triggers: [
     { id: 'base', when: (g, m) => g.hasBuilding(0, 'refinery'), do: (g, m) => objDone(m, 'base') },
-    { id: 'ref', when: (g, m) => m.vars.destroyed_ref, do: (g, m) => { objDone(m, 'ref'); missionMessage(g, 'Ash refinery destroyed. Their economy is finished; clear the valley.'); } },
+    { id: 'ref', when: (g, m) => gone(g, 'ref'), do: (g, m) => { objDone(m, 'ref'); missionMessage(g, 'Ash refinery destroyed. Their economy is finished; clear the valley.'); } },
     { id: 'probe', when: (g, m) => m.t > 150, do: (g, m) => { spawnGroup(g, 1, [['rifleman', 3], ['buggy', 1]], 58, 30, { hunt: true }); } },
   ],
   hints: [
@@ -2033,7 +2071,7 @@ defMission({
     { when: (g) => g.hasBuilding(0, 'refinery'), text: 'Income is running. Build a <b>Barracks</b>, then a <b>Watchtower</b> from the Defend tab facing north-east. They will probe you soon. A <b>Silo</b> stops harvested crystal being wasted when the refinery is full.', done: (g) => g.hasBuilding(0, 'gtower'), timeout: 60000 },
     { when: (g) => g.hasBuilding(0, 'works'), text: 'Vehicle Works up. A second harvester doubles your income; then Battle Tanks. When you have six or so, tap <b>Select army</b> and advance on the Ash refinery to the north-east.', done: () => false, timeout: 15000 },
   ],
-  win: (g, m) => m.vars.destroyed_ref && countEnemy(g, 0) === 0, winText: 'Dunmere is clear. Our line now runs to the mountains.',
+  win: (g, m) => gone(g, 'ref') && countEnemy(g, 0) === 0, winText: 'Dunmere is clear. Our line now runs to the mountains.',
 });
 
 defMission({
@@ -2082,10 +2120,10 @@ defMission({
     spawnGroup(g, 1, [['bike', 1]], 44, 28);
   },
   triggers: [
-    { id: 'free', when: (g, m) => m.vars.destroyed_cell, do: (g, m) => { objDone(m, 'free'); const d = g.spawnUnit('civilian', 0, 30, 19, { tag: 'halden' }); missionMessage(g, 'Dr Halden is free. Get him to the evacuation zone on the eastern road.'); g.revealArea(56, 32, 5); spawnGroup(g, 1, [['buggy', 2], ['rifleman', 3]], 44, 28, { hunt: true }); } },
+    { id: 'free', when: (g, m) => gone(g, 'cell'), do: (g, m) => { objDone(m, 'free'); const d = g.spawnUnit('civilian', 0, 30, 19, { tag: 'halden' }); missionMessage(g, 'Dr Halden is free. Get him to the evacuation zone on the eastern road.'); g.revealArea(56, 32, 5); spawnGroup(g, 1, [['buggy', 2], ['rifleman', 3]], 44, 28, { hunt: true }); } },
   ],
   win: (g, m) => { const d = tagged(g, 'halden'); return !!(d && d.cx >= 53 && d.cy >= 28 && d.cy <= 36); }, winText: 'Dr Halden is aboard. His notes on Vitrium refinement will change the war.',
-  lose: (g, m) => m.vars.destroyed_cell && !tagged(g, 'halden'), loseText: 'Dr Halden was killed in the extraction.',
+  lose: (g, m) => m.fired.free && !tagged(g, 'halden'), loseText: 'Dr Halden was killed in the extraction.',
 });
 
 defMission({
@@ -2106,10 +2144,10 @@ defMission({
   },
   triggers: [
     { id: 'uplink', when: (g, m) => g.hasBuilding(0, 'uplink'), do: (g, m) => { objDone(m, 'uplink'); missionMessage(g, 'Uplink online. Keep it powered and the Lance will charge.'); } },
-    { id: 'shrine', when: (g, m) => m.vars.destroyed_shrine, do: (g, m) => { objDone(m, 'shrine'); missionMessage(g, 'The Shrine is gone. Finish them.'); } },
+    { id: 'shrine', when: (g, m) => gone(g, 'shrine'), do: (g, m) => { objDone(m, 'shrine'); missionMessage(g, 'The Shrine is gone. Finish them.'); } },
     { id: 'warn', when: (g, m) => m.t > 600, do: (g, m) => missionMessage(g, 'Intelligence: the Cinder warhead is nearly ready. Hurry.') },
   ],
-  win: (g, m) => m.vars.destroyed_shrine && countEnemy(g, 0) === 0, winText: 'The Varne basin is silent. The Sons of Ash are broken, for now.',
+  win: (g, m) => gone(g, 'shrine') && countEnemy(g, 0) === 0, winText: 'The Varne basin is silent. The Sons of Ash are broken, for now.',
 });
 
 // ---------- ASH CAMPAIGN ----------
@@ -2228,9 +2266,9 @@ defMission({
   },
   triggers: [
     { id: 'shrine', when: (g, m) => g.hasBuilding(0, 'shrine'), do: (g, m) => { objDone(m, 'shrine'); missionMessage(g, 'The Shrine stands. The warhead will be ready in fourteen minutes.'); } },
-    { id: 'uplink', when: (g, m) => m.vars.destroyed_uplink, do: (g, m) => { objDone(m, 'uplink'); missionMessage(g, 'The Uplink is destroyed. No more fire from the sky. Finish the citadel.'); } },
+    { id: 'uplink', when: (g, m) => gone(g, 'uplink'), do: (g, m) => { objDone(m, 'uplink'); missionMessage(g, 'The Uplink is destroyed. No more fire from the sky. Finish the citadel.'); } },
   ],
-  win: (g, m) => m.vars.destroyed_uplink && countEnemy(g, 0) === 0, winText: 'Marrow burns. Ash rises.',
+  win: (g, m) => gone(g, 'uplink') && countEnemy(g, 0) === 0, winText: 'Marrow burns. Ash rises.',
 });
 
 const CAMPAIGNS = { union: ['u1', 'u2', 'u3', 'u4', 'u5'], ash: ['a1', 'a2', 'a3', 'a4', 'a5'] };
@@ -3936,6 +3974,125 @@ class Audio {
   }
 }
 
+// ===================== AUDIO 2: layered effects, reverb, music tracks =====================
+Audio.prototype.init = function () {
+  if (this.ctx) return;
+  try {
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const c = this.ctx;
+    this.master = c.createGain(); this.master.gain.value = 0.55;
+    const comp = c.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 4; comp.attack.value = 0.003; comp.release.value = 0.25;
+    this.master.connect(comp); comp.connect(c.destination);
+    // reverb send: short noise impulse
+    const len = c.sampleRate * 1.6; const ir = c.createBuffer(2, len, c.sampleRate);
+    for (let ch = 0; ch < 2; ch++) { const d = ir.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2) * 0.6; }
+    this.verb = c.createConvolver(); this.verb.buffer = ir; this.verbGain = c.createGain(); this.verbGain.gain.value = 0.22; this.verb.connect(this.verbGain); this.verbGain.connect(this.master);
+    this.sfxBus = c.createGain(); this.sfxBus.gain.value = 1; this.sfxBus.connect(this.master); this.sfxBus.connect(this.verb);
+    this.musicBus = c.createGain(); this.musicBus.gain.value = 0.34; this.musicBus.connect(this.master);
+  } catch (e) { this.ctx = null; }
+};
+Audio.prototype.noiseBuf = function (dur) { const c = this.ctx; const key = Math.round(dur * 100); this._nb = this._nb || {}; if (this._nb[key]) return this._nb[key]; const n = c.createBuffer(1, Math.max(1, Math.floor(c.sampleRate * dur)), c.sampleRate); const d = n.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; this._nb[key] = n; return n; };
+// shaped noise: filter type, start/end cutoff, gain envelope
+Audio.prototype.noiseHit = function (dur, vol, f0, f1, type = 'lowpass', q = 0.7, dest) {
+  const c = this.ctx; const s = c.createBufferSource(); s.buffer = this.noiseBuf(Math.min(2, dur + 0.05));
+  const f = c.createBiquadFilter(); f.type = type; f.Q.value = q; f.frequency.setValueAtTime(f0, c.currentTime); f.frequency.exponentialRampToValueAtTime(Math.max(30, f1), c.currentTime + dur);
+  const g = c.createGain(); g.gain.setValueAtTime(vol, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + dur);
+  s.connect(f); f.connect(g); g.connect(dest || this.sfxBus); s.start(); s.stop(c.currentTime + dur + 0.05);
+};
+Audio.prototype.osc = function (type, f0, f1, dur, vol, dest, opts = {}) {
+  const c = this.ctx; const o = c.createOscillator(); o.type = type; o.frequency.setValueAtTime(f0, c.currentTime); if (f1) o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), c.currentTime + dur);
+  const g = c.createGain(); const a = opts.attack || 0.005; g.gain.setValueAtTime(0.0001, c.currentTime); g.gain.linearRampToValueAtTime(vol, c.currentTime + a); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + dur);
+  let node = o; if (opts.drive) { const ws = c.createWaveShaper(); const n = 256, curve = new Float32Array(n); for (let i = 0; i < n; i++) { const x = i / (n - 1) * 2 - 1; curve[i] = Math.tanh(x * opts.drive); } ws.curve = curve; o.connect(ws); node = ws; }
+  node.connect(g); g.connect(dest || this.sfxBus); o.start(); o.stop(c.currentTime + dur + 0.05); return o;
+};
+Audio.prototype.tone = function (freq, dur, vol, type, slide) { if (!this.ctx) return; this.osc(type || 'sine', freq, slide || 0, dur, vol); };
+Audio.prototype.noise = function (dur, vol, freq, decay) { if (!this.ctx) return; this.noiseHit(dur, vol, freq || 2000, (freq || 2000) * 0.3); };
+Audio.prototype.play = function (name, far) {
+  if (!this.ctx || this.muted) return;
+  const now = performance.now();
+  const lim = { gun: 55, cannon: 90, rocket: 90, laser: 200, flame: 150, boom: 100, bigboom: 220, inf_die: 80, crush: 100, order: 80, select: 80 }[name] || 0;
+  if (lim && now - (this.lastSfx[name] || 0) < lim) return;
+  this.lastSfx[name] = now;
+  const v = far ? 0.3 : 1; const c = this.ctx; const t = c.currentTime;
+  const later = (ms, fn) => setTimeout(() => this.ctx && fn(), ms);
+  switch (name) {
+    case 'gun': this.noiseHit(0.07, 0.35 * v, 4200, 900, 'bandpass', 0.8); this.osc('square', 180, 60, 0.05, 0.12 * v); break;
+    case 'cannon': this.noiseHit(0.05, 0.5 * v, 3000, 800, 'lowpass'); this.osc('sine', 110, 32, 0.35, 0.55 * v, null, { drive: 3 }); this.noiseHit(0.5, 0.3 * v, 1200, 120); break;
+    case 'rocket': this.noiseHit(0.55, 0.32 * v, 900, 3500, 'bandpass', 1.2); this.osc('sawtooth', 520, 140, 0.45, 0.12 * v); break;
+    case 'laser': this.osc('square', 1800, 260, 0.4, 0.22 * v); this.osc('sine', 3600, 500, 0.3, 0.12 * v); this.noiseHit(0.25, 0.12 * v, 6000, 1500, 'highpass'); break;
+    case 'flame': this.noiseHit(0.6, 0.3 * v, 500, 180, 'lowpass', 0.5); this.noiseHit(0.5, 0.12 * v, 2500, 900, 'bandpass', 0.8); break;
+    case 'boom': this.noiseHit(0.08, 0.6 * v, 4000, 1500); this.osc('sine', 90, 28, 0.55, 0.6 * v, null, { drive: 2.5 }); this.noiseHit(0.9, 0.35 * v, 700, 90); break;
+    case 'bigboom': this.noiseHit(0.1, 0.7 * v, 3500, 1200); this.osc('sine', 70, 22, 1.1, 0.7 * v, null, { drive: 3 }); this.noiseHit(1.8, 0.45 * v, 500, 60); later(120, () => this.noiseHit(0.6, 0.2 * v, 1800, 300)); break;
+    case 'nuke': this.noiseHit(0.15, 0.9, 3000, 1000); this.osc('sine', 48, 18, 3, 0.8, null, { drive: 4 }); this.noiseHit(3.5, 0.6, 400, 40); later(300, () => this.noiseHit(2, 0.3, 1500, 200)); break;
+    case 'inf_die': this.osc('triangle', 320, 110, 0.18, 0.14 * v); this.noiseHit(0.12, 0.08 * v, 1500, 400); break;
+    case 'crush': this.noiseHit(0.22, 0.3 * v, 900, 200); this.osc('sine', 80, 40, 0.15, 0.2 * v); break;
+    case 'ok': this.osc('sine', 880, 0, 0.09, 0.16); later(90, () => this.osc('sine', 1320, 0, 0.14, 0.16)); break;
+    case 'warn': this.osc('square', 520, 0, 0.11, 0.18); later(140, () => this.osc('square', 380, 0, 0.2, 0.18)); break;
+    case 'alarm': for (let i = 0; i < 3; i++) later(i * 180, () => this.osc('square', 720, 480, 0.13, 0.16)); break;
+    case 'place': this.osc('square', 220, 120, 0.1, 0.25); this.noiseHit(0.12, 0.25, 1500, 400); later(60, () => this.noiseHit(0.08, 0.2, 900, 300)); break;
+    case 'sell': this.osc('triangle', 600, 900, 0.1, 0.18); later(100, () => this.osc('triangle', 900, 1300, 0.12, 0.18)); break;
+    case 'capture': this.osc('triangle', 500, 0, 0.1, 0.18); later(110, () => this.osc('triangle', 750, 0, 0.16, 0.18)); break;
+    case 'radio': this.osc('square', 1200, 0, 0.05, 0.12); later(70, () => this.osc('square', 1600, 0, 0.05, 0.12)); this.noiseHit(0.08, 0.05, 3000, 2000, 'bandpass', 2); break;
+    case 'select': this.osc('sine', 980, 0, 0.05, 0.1); this.noiseHit(0.03, 0.06, 4000, 3000, 'bandpass', 3); break;
+    case 'order': this.osc('sine', 700, 1000, 0.06, 0.1); this.noiseHit(0.04, 0.05, 3500, 2500, 'bandpass', 3); break;
+    case 'click': this.osc('square', 500, 0, 0.03, 0.08); break;
+  }
+};
+
+// ---------- music: a small step sequencer with several tracks ----------
+const MUSIC_TRACKS = {
+  off:        { name: 'Off' },
+  ambient:    { name: 'Ambient drone', bpm: 60, scale: [0, 3, 5, 7, 10], root: 41.2, kick: '', snare: '', hat: '', bass: 'x.......x.......', pad: true, arp: '..x...x...x.....', lead: false, drone: true },
+  industrial: { name: 'Industrial', bpm: 96, scale: [0, 2, 3, 7, 10], root: 55, kick: 'x...x...x...x.x.', snare: '....x.......x...', hat: 'x.x.x.x.x.x.x.x.', bass: 'x..x..x.x..x..x.', pad: true, arp: 'x.x.x.x.x.x.x.x.', lead: false, clank: true },
+  march:      { name: 'War march', bpm: 112, scale: [0, 2, 3, 5, 7, 8, 10], root: 49, kick: 'x...x...x...x...', snare: '..x...x...x...xx', hat: 'x.xxx.xxx.xxx.xx', bass: 'x.x.x.x.x.x.x.x.', pad: true, arp: '', lead: true, brass: true },
+  tension:    { name: 'Tension', bpm: 84, scale: [0, 1, 5, 6, 8], root: 46.2, kick: 'x.......x.....x.', snare: '', hat: '..x...x...x...x.', bass: 'x...............', pad: true, arp: 'x..x..x..x..x..x', lead: false, pulse: true },
+};
+Audio.prototype.music = function (on, trackId) {
+  this.stopMusic();
+  if (!on || !this.ctx) return;
+  const ids = Object.keys(MUSIC_TRACKS).filter(k => k !== 'off');
+  const id = trackId && MUSIC_TRACKS[trackId] && trackId !== 'off' ? trackId : (trackId === 'random' || !trackId ? ids[Math.floor(Math.random() * ids.length)] : 'ambient');
+  if (trackId === 'off') return;
+  const T = MUSIC_TRACKS[id]; const c = this.ctx;
+  const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.2); bus.connect(this.musicBus);
+  const verbSend = c.createGain(); verbSend.gain.value = 0.5; bus.connect(verbSend); verbSend.connect(this.verb);
+  const st = { id, bus, step: 0, nodes: [], timer: null, bar: 0 };
+  const stepDur = 60 / T.bpm / 4;
+  const freq = (deg, oct = 0) => T.root * Math.pow(2, (T.scale[((deg % T.scale.length) + T.scale.length) % T.scale.length] + 12 * (oct + Math.floor(deg / T.scale.length))) / 12);
+  // sustained layers
+  if (T.drone || T.pad) {
+    const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = T.drone ? 260 : 700; f.Q.value = 2; f.connect(bus);
+    const lfo = c.createOscillator(); lfo.frequency.value = 0.07; const lg = c.createGain(); lg.gain.value = T.drone ? 160 : 300; lfo.connect(lg); lg.connect(f.frequency); lfo.start(); st.nodes.push(lfo);
+    for (const [deg, oct, ty, vol] of [[0, 0, 'sawtooth', 0.09], [0, 0, 'sawtooth', 0.09], [2, 1, 'triangle', 0.05], [4, 1, 'sine', 0.04]]) { const o = c.createOscillator(); o.type = ty; o.frequency.value = freq(deg, oct) * (ty === 'sawtooth' && vol === 0.09 && deg === 0 ? (st.nodes.length % 2 ? 1.004 : 0.996) : 1); const g = c.createGain(); g.gain.value = vol; o.connect(g); g.connect(f); o.start(); st.nodes.push(o); }
+  }
+  const chords = [[0, 2, 4], [3, 5, 0], [4, 6, 1], [2, 4, 6]];
+  const tick = () => {
+    if (!this.musicState || this.musicState !== st) return;
+    const s = st.step % 16; const bar = Math.floor(st.step / 16); const chord = chords[bar % chords.length];
+    const t0 = c.currentTime + 0.02;
+    const hit = (pat) => pat && pat[s] === 'x';
+    if (hit(T.kick)) { this.osc('sine', 120, 38, 0.28, 0.5, bus, { drive: 2 }); this.noiseHit(0.03, 0.2, 2500, 800, 'lowpass', 0.7, bus); }
+    if (hit(T.snare)) { this.noiseHit(0.16, 0.3, 3000, 900, 'bandpass', 0.9, bus); this.osc('triangle', 220, 120, 0.1, 0.15, bus); }
+    if (hit(T.hat)) this.noiseHit(0.04, s % 4 === 0 ? 0.14 : 0.08, 8000, 6000, 'highpass', 1, bus);
+    if (T.clank && s === 6 && bar % 2 === 0) { this.osc('square', 1900, 1200, 0.12, 0.08, bus); this.noiseHit(0.2, 0.12, 4000, 2000, 'bandpass', 4, bus); }
+    if (hit(T.bass)) { const deg = chord[0] + (s === 8 ? 4 : 0); this.osc('sawtooth', freq(deg, -1), freq(deg, -1) * 0.98, stepDur * (T.bpm < 90 ? 6 : 1.8), 0.22, bus, { drive: 1.5 }); }
+    if (hit(T.arp)) { const deg = chord[(Math.floor(s / 2)) % 3] + 1; this.osc(T.id === 'tension' ? 'square' : 'triangle', freq(deg, 1), 0, stepDur * 1.6, T.id === 'tension' ? 0.05 : 0.08, bus, { attack: 0.01 }); }
+    if (T.pulse && s % 2 === 0) this.osc('sine', freq(chord[0], 0), 0, stepDur * 0.9, 0.06, bus);
+    if (T.lead && (s === 0 || s === 6 || s === 10 || (bar % 2 === 1 && s === 14))) { const seq = [4, 5, 4, 2, 0, 2, 4, 6]; const deg = chord[0] + seq[(bar * 2 + Math.floor(s / 8)) % seq.length]; const o = this.osc('sawtooth', freq(deg, 1), 0, stepDur * 3.5, 0.16, bus, { attack: 0.03, drive: 1.2 }); }
+    if (T.brass && s === 0 && bar % 4 === 0) for (const d of chord) this.osc('sawtooth', freq(d, 0), freq(d, 0) * 1.003, stepDur * 14, 0.1, bus, { attack: 0.08 });
+    st.step++;
+    st.timer = setTimeout(tick, stepDur * 1000);
+  };
+  this.musicState = st; tick();
+};
+Audio.prototype.stopMusic = function () {
+  const st = this.musicState; if (!st) return; this.musicState = null;
+  if (st.timer) clearTimeout(st.timer);
+  try { st.bus.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.4); } catch (e) {}
+  setTimeout(() => { for (const n of st.nodes) { try { n.stop(); } catch (e) {} } try { st.bus.disconnect(); } catch (e) {} }, 1500);
+};
+Audio.prototype.musicNodesOff = function () { this.stopMusic(); };
+
 // ===================== APP / UI =====================
 const $ = (s) => document.querySelector(s);
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -3953,7 +4110,7 @@ const ICONS = {
 class App {
   constructor() {
     this.audio = new Audio();
-    this.settings = Object.assign({ voice: true, sound: true, bars: true, zoom: 1.5, speed: 1, leftHand: false, fog: false, music: true }, lsGet(STORE.settings, {}));
+    this.settings = Object.assign({ voice: true, sound: true, bars: true, zoom: 1.5, speed: 1, leftHand: false, fog: false, music: true, musicTrack: 'ambient' }, lsGet(STORE.settings, {}));
     this.progress = lsGet(STORE.progress, { union: 0, ash: 0 });
     this.game = null; this.paused = false; this.acc = 0; this.last = 0;
     this.ui = { selected: new Set(), box: null, placing: null, swTargeting: null, forceFire: false, hoverCell: null, tab: 'structure', groups: {}, rallyMode: false };
@@ -4040,7 +4197,8 @@ class App {
       tog('Voice alerts', 'voice', () => { this.audio.voice = this.settings.voice; });
       tog('Always show health bars', 'bars', () => { this.r.showBars = this.settings.bars; });
       tog('Fog of war (explored ground darkens when unseen)', 'fog');
-      tog('Music', 'music', () => { this.audio.music(this.settings.music); });
+      const musicRow = () => { card.appendChild(el('div', 'small', 'Background music')); const row = el('div', 'row'); card.appendChild(row); const bs = {}; const opts = [['off', 'Off']].concat(Object.keys(MUSIC_TRACKS).filter(k => k !== 'off').map(k => [k, MUSIC_TRACKS[k].name])).concat([['random', 'Random']]); for (const [v, l] of opts) { const b = el('button', 'chip' + (this.settings.musicTrack === v ? ' on' : ''), l); b.onclick = () => { this.settings.musicTrack = v; this.settings.music = v !== 'off'; this.saveSettings(); for (const k in bs) bs[k].classList.toggle('on', k === v); this.audio.init && this.audio.init(); this.playMusic(); }; bs[v] = b; row.appendChild(b); } };
+      musicRow();
       tog('Sidebar on the left', 'leftHand', () => { document.body.classList.toggle('left', this.settings.leftHand); });
       btn('Reset campaign progress', () => { this.progress = { union: 0, ash: 0 }; lsSet(STORE.progress, this.progress); this.toast('Progress reset', 'info'); }, 'ghost');
       btn('Back', () => this.showMenu('main'), 'ghost');
@@ -4066,7 +4224,8 @@ class App {
       const tog = (label, key, fn) => { const b = el('button', 'mbtn ghost', ''); const upd = () => b.innerHTML = label + ': <b>' + (this.settings[key] ? 'On' : 'Off') + '</b>'; upd(); b.onclick = () => { this.settings[key] = !this.settings[key]; this.saveSettings(); upd(); fn && fn(); }; card.appendChild(b); };
       tog('Sound', 'sound', () => { this.audio.muted = !this.settings.sound; });
       tog('Voice alerts', 'voice', () => { this.audio.voice = this.settings.voice; });
-      tog('Music', 'music', () => { this.audio.music(this.settings.music); });
+      const musicRow = () => { card.appendChild(el('div', 'small', 'Background music')); const row = el('div', 'row'); card.appendChild(row); const bs = {}; const opts = [['off', 'Off']].concat(Object.keys(MUSIC_TRACKS).filter(k => k !== 'off').map(k => [k, MUSIC_TRACKS[k].name])).concat([['random', 'Random']]); for (const [v, l] of opts) { const b = el('button', 'chip' + (this.settings.musicTrack === v ? ' on' : ''), l); b.onclick = () => { this.settings.musicTrack = v; this.settings.music = v !== 'off'; this.saveSettings(); for (const k in bs) bs[k].classList.toggle('on', k === v); this.audio.init && this.audio.init(); this.playMusic(); }; bs[v] = b; row.appendChild(b); } };
+      musicRow();
       if (this.game.mission) { const ol = el('div', 'objs', '<b>Objectives</b>'); for (const o of this.game.mission.objectives) ol.appendChild(el('div', 'obj' + (o.done ? ' done' : ''), (o.done ? '☑ ' : '◻ ') + o.text)); card.appendChild(ol); }
       btn('Quit to menu', () => { this.autosave(); this.game = null; this.audio.music(false); this.showMenu('main'); }, 'ghost danger');
     } else if (name === 'over') {
@@ -4102,9 +4261,10 @@ class App {
     this.itemsKey = null; this.hideMenu(); this.buildSidebar(); this.updateHud(); this.updateActionBar(); this.audio.muted = !this.settings.sound; this.audio.voice = this.settings.voice;
     document.body.classList.toggle('left', !!this.settings.leftHand);
     this.autosaveT = 0;
-    this.audio.music(this.settings.music);
+    this.playMusic();
     this.audio.say(g.mission ? 'Mission briefing complete. Good luck, Commander.' : 'Battle control online.');
   }
+  playMusic() { const t = this.settings.musicTrack || (this.settings.music ? 'random' : 'off'); this.audio.music(t !== 'off', t); }
   resume() { this.paused = false; this.hideMenu(); this.last = performance.now(); this.updateHud(); }
   saveGame() { if (!this.game) return; const d = { label: this.game.mission ? 'Mission ' + this.game.mission.def.n + ': ' + this.game.mission.def.title : 'Skirmish', time: this.game.time, at: Date.now(), data: this.game.serialize() }; if (lsSet(STORE.save, d)) this.toast('Game saved', 'ok'); else this.toast('Save failed (storage full?)', 'warn'); }
   autosave() { if (!this.game || this.game.over) return; const d = { label: (this.game.mission ? 'Mission ' + this.game.mission.def.n + ': ' + this.game.mission.def.title : 'Skirmish') + ' (auto)', time: this.game.time, at: Date.now(), data: this.game.serialize() }; lsSet(STORE.auto, d); }
@@ -4231,8 +4391,7 @@ class App {
     if (pl.sw) { sw.hidden = false; sw.textContent = pl.sw.ready ? SUPERWEAPON[pl.sw.type].name.toUpperCase() + ' READY' : SUPERWEAPON[pl.sw.type].name + ' ' + fmtTime(pl.sw.timer); sw.classList.toggle('ready', pl.sw.ready); } else sw.hidden = true;
     if (this.r.frame % 12 === 0) this.renderItems();
     const st = $('#storage'); st.textContent = pl.capacity ? 'stored ' + Math.floor(pl.ore) + '/' + pl.capacity : ''; st.classList.toggle('full', pl.capacity > 0 && pl.ore >= pl.capacity);
-    if (g.mission && this.r.frame % 30 === 0) { const o = g.mission.objectives.find(o => !o.done); $('#objective').textContent = o ? o.text : 'All objectives complete'; }
-    else if (!g.mission && this.r.frame % 30 === 0) $('#objective').textContent = 'Destroy all enemy forces';
+    if (this.r.frame % 30 === 0) { const n = g.enemyCount(); const tail = ' · Enemies: ' + n + (n > 0 && n <= 4 ? ' (revealed)' : ''); if (g.mission) { const o = g.mission.objectives.find(o => !o.done); $('#objective').textContent = (o ? o.text : 'All objectives complete') + tail; } else $('#objective').textContent = 'Destroy all enemy forces' + tail; }
   }
   updateActionBar() {
     const g = this.game; const bar = $('#actions'); bar.innerHTML = '';
@@ -4451,4 +4610,4 @@ class App {
 window.addEventListener('load', () => { window.app = new App(); });
 
 </script>
-<script>if(location.protocol.startsWith("http")&&"serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").then(function(reg){reg.addEventListener("updatefound",function(){var nw=reg.installing;nw&&nw.addEventListener("statechange",function(){if(nw.state==="activated"&&navigator.serviceWorker.controller&&!window.app?.game){location.reload();}});});}).catch(function(){});}</script></body></html>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(r=>{r.addEventListener('updatefound',()=>{const w=r.installing;w&&w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)location.reload();});});});}</script></body></html>
